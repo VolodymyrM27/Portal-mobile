@@ -15,7 +15,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Portal">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,5 +27,5 @@
                 android:value="" />
         </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

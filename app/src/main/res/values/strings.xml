@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Portal</string>
+    <string name="sign_in">"Sign In"</string>
+    <string name="sign_in_with_portal">"Sign in with Portal"</string>
+    <string name="sign_up">"Sign Up"</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="logout">"Log Out"</string>
+    <string name="password">Password</string>
+    <string name="passwords_identical">"Passwords should be identical"</string>
+    <string name="repeat_password">"Repeat Password"</string>
+    <string name="welcome">WELCOME</string>
+    <string name="continue_with_google">"Continue with Google"</string>
+    <string name="creating_new_account">"Creating new account"</string>
+    <string name="create_new_account">"Create New Account"</string>
+    <string name="google_cloud_server_client_id" translatable="false">772324998925-3ql1dedr5evb224og1psm8dul7uestlg.apps.googleusercontent.com</string>
 </resources>
