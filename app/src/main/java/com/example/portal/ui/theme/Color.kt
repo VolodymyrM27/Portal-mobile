@@ -10,6 +10,7 @@ val Green100 = Color(0xFFCADFC5)
 val Green200 = Color(0xFF7DA274)
 val Yellow100 = Color(0xFFF2F1D6)
 val BrightGreen = Color(0xFFB5E51D)
+val LightGreen = Color(0xFFD6EF88)
 
 //Dark Theme
 val White = Color(0xFFFFFFFF)
