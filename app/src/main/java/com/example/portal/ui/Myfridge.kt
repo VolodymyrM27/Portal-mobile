@@ -8,6 +8,8 @@ import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,12 +47,15 @@ fun MyFridge(userLogin: String){
 
 
         }
-        FridgeItem()
+        FridgeItem(R.drawable.ic_launcher_background,"Смачні кадировці у власному соку",10.5)
     }
 }
 
 @Composable
-fun FridgeItem(){
+fun FridgeItem(picture: Int, name: String, capacity: Double){
+    var capacitynew = remember {
+        mutableStateOf(capacity)
+    }
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 15.dp, vertical = 5.dp),
@@ -60,20 +65,36 @@ fun FridgeItem(){
             .size(0.dp, 100.dp)
             .fillMaxWidth(),
         ){
-            Row() {
-                Image(painter = painterResource(id = R.drawable.ic_launcher_background),
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(painter = painterResource(id = picture),
                     contentDescription = "fridgeitem",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .padding(10.dp)
                         .size(80.dp)
-                        .clip(CircleShape)
+                        .clip(CircleShape),
                     )
                 Column(
-                    modifier = Modifier.padding(vertical = 10.dp)
+                    modifier = Modifier.padding(vertical = 10.dp),
                 ) {
-                    Text(text = "Смачні кадировці у власному соку", maxLines = 2, style = MaterialTheme.typography.h6)
-                    Text(text = "Кількість: 10,5 кг", style = MaterialTheme.typography.h6)
+                    Text(text = "Смачні кадировці у власному соку", modifier =  Modifier.fillMaxWidth(0.8f), maxLines = 2, style = MaterialTheme.typography.h6)
+                    Text(text = "Кількість: ${capacitynew.value} кг", modifier =  Modifier.fillMaxWidth(0.8f), style = MaterialTheme.typography.h6)
+                }
+                Column(
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    IconButton(onClick = {
+                        capacitynew.value += 1 ;
+                    }) {
+                        Icon(Icons.Filled.Edit,null)
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.Clear,null)
+                    }
                 }
             }
         }
