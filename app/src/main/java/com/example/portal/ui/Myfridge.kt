@@ -2,9 +2,12 @@ package com.example.portal.ui
 
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.*
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -47,13 +50,20 @@ fun MyFridge(userLogin: String){
 
 
         }
-        FridgeItem(R.drawable.ic_launcher_background,"Смачні кадировці у власному соку",10.5)
-        FridgeItem(R.drawable.ic_launcher_background,"Смачні кадировці у власному соку",10.5)
-    }
+        Column(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+
+            ){
+            FridgeItem(R.drawable.ic_launcher_background,"Смачні кадировці у власному соку",10.5,"кг")
+            FridgeItem(R.drawable.ic_launcher_background,"Молоко",1.0,"л")
+            FridgeItem(R.drawable.ic_launcher_background,"Смачні кадировці у власному соку",10.5,"кг")
+
+        }
+         }
 }
 
 @Composable
-fun FridgeItem(picture: Int, name: String, capacity: Double){
+fun FridgeItem(picture: Int, name: String, capacity: Double, capacitySymbol: String){
     var capacitynew = remember {
         mutableStateOf(capacity)
     }
@@ -85,8 +95,8 @@ fun FridgeItem(picture: Int, name: String, capacity: Double){
                     Column(
                         modifier = Modifier.padding(vertical = 10.dp),
                     ) {
-                        Text(text = "Смачні кадировці у власному соку", modifier =  Modifier.fillMaxWidth(0.8f), maxLines = 2, style = MaterialTheme.typography.h6)
-                        Text(text = "Кількість: ${capacitynew.value} кг", modifier =  Modifier.fillMaxWidth(0.8f), style = MaterialTheme.typography.h6)
+                        Text(text = name, modifier =  Modifier.fillMaxWidth(0.8f).height(50.dp), maxLines = 2, style = MaterialTheme.typography.h6)
+                        Text(text = "Кількість: ${capacitynew.value} $capacitySymbol", modifier =  Modifier.fillMaxWidth(0.8f), style = MaterialTheme.typography.h6)
                     }
                     Column(
                         modifier = Modifier.padding(vertical = 10.dp),
