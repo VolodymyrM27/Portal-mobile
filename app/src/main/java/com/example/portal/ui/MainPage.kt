@@ -16,7 +16,7 @@ import com.example.portal.responses.UserResponse
 
 
 @Composable
-fun MainPage(userResponse: UserResponse?, onLogOutClick: () -> Unit, isLoading: Boolean) {
+fun MainPage(userResponse: UserResponse?, onLogOutClick: () -> Unit, isLoading: Boolean, goToFridge: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -40,6 +40,12 @@ fun MainPage(userResponse: UserResponse?, onLogOutClick: () -> Unit, isLoading: 
         }
 
         StyledButton(onClick = onLogOutClick, icon = {
+            androidx.compose.material.Icon(
+                imageVector = Icons.Rounded.Lock, contentDescription = "lock"
+            )
+        }, textId = R.string.logout)
+
+        StyledButton(onClick = goToFridge, icon = {
             androidx.compose.material.Icon(
                 imageVector = Icons.Rounded.Lock, contentDescription = "lock"
             )
