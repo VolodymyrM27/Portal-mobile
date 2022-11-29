@@ -1,6 +1,5 @@
 package com.example.portal
 
-import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.portal.ui.theme.BrightGreen
 
 @Composable
 fun TextEditField(
@@ -66,7 +65,7 @@ fun StyledButton(onClick: () -> Unit, icon: @Composable () -> Unit, @StringRes t
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             stringResource(textId),
-            style = MaterialTheme.typography.h2,
+            style = MaterialTheme.typography.h3,
             textAlign = TextAlign.Center
         )
     }
@@ -85,5 +84,26 @@ fun CustomCircularProgressIndicator() {
             color = MaterialTheme.colors.secondary,
             strokeWidth = 8.dp
         )
+    }
+}
+
+@Composable
+fun Header(text: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 15.dp),
+        shape = RoundedCornerShape(15.dp),
+        BrightGreen
+    ) {
+        Box(
+            modifier = Modifier
+                .size(0.dp, 50.dp)
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        )
+        {
+            Text(text = text, style = MaterialTheme.typography.h2)
+        }
     }
 }

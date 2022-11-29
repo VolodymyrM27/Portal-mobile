@@ -10,12 +10,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.portal.auth.BaseResponse
 import com.example.portal.auth.SessionManager
+import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.google.AuthViewModel
 import com.example.portal.responses.UserResponse
-import com.example.portal.ui.MainPage
-import com.example.portal.ui.LoginPage
-import com.example.portal.ui.AuthPage
-import com.example.portal.ui.SignUpPage
+import com.example.portal.ui.*
 import com.example.portal.viewmodels.LoginViewModel
 import com.example.portal.viewmodels.MainPageViewModel
 import com.example.portal.viewmodels.SignUpViewModel
@@ -35,17 +33,19 @@ fun PortalApp(
     val currentUser: MutableState<UserResponse?> = remember { mutableStateOf(null) }
 
 
-    val token = SessionManager.getToken(activity)
-    if (!token.isNullOrBlank()) {
-        goToMainPage(
-            navController = navController,
-            startDestination = startDestination,
-            mainPageViewModel = mainPageViewModel,
-            activity = activity,
-            isLoading = isLoading,
-            currentUser = currentUser
-        )
-    }
+//    val token = SessionManager.getToken(activity)
+//    if (!token.isNullOrBlank()) {
+//        goToMainPage(
+//            navController = navController,
+//            startDestination = startDestination,
+//            mainPageViewModel = mainPageViewModel,
+//            activity = activity,
+//            isLoading = isLoading,
+//            currentUser = currentUser
+//        )
+//    }
+
+    startDestination.value = Routes.DietaryRestrictions.route
 
     NavHost(navController = navController, startDestination = startDestination.value) {
         val authViewModel = AuthViewModel()
@@ -92,10 +92,41 @@ fun PortalApp(
         }
         composable(Routes.Main.route) {
             MainPage(userResponse = currentUser.value, onLogOutClick = {
+
                 logoutAndGoToAuthPage(
                     activity, navController, startDestination.value
                 )
-            }, isLoading = isLoading.value)
+            }, isLoading = isLoading.value, goToFridge = {
+                navController.popBackStack(Routes.Main.route, inclusive = true)
+                navController.navigate(Routes.Fridge.route)
+            })
+        }
+        composable(Routes.Fridge.route) {
+            Fridge()
+        }
+        composable(Routes.DietaryRestrictions.route) {
+            val restrictions = remember {
+                mutableListOf<DietaryRestrictionEntity>(
+                    DietaryRestrictionEntity(
+                        Id = 1,
+                        Title = "Вегетеріанство",
+                        Image = R.drawable.ic_launcher_background
+                    ),
+                    DietaryRestrictionEntity(
+                        Id = 2,
+                        Title = "Халяль",
+                        Image = R.drawable.ic_launcher_background
+                    )
+                )
+            }
+            DietaryRestrictions(
+                restrictions = restrictions,
+                deleteItem = { id ->
+                    restrictions.removeIf { x ->
+                        x.Id == id
+                    }
+                }
+            )
         }
     }
 }
