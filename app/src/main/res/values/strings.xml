@@ -8,6 +8,7 @@
     <string name="name">Name</string>
     <string name="logout">"Log Out"</string>
     <string name="password">Password</string>
+    <string name="search">Search</string>
     <string name="passwords_identical">"Passwords should be identical"</string>
     <string name="repeat_password">"Repeat Password"</string>
     <string name="welcome">WELCOME</string>
