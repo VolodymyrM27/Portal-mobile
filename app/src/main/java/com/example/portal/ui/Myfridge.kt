@@ -1,6 +1,7 @@
 package com.example.portal.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
@@ -256,6 +257,12 @@ fun showEditDialog(
     var capacitynew = remember {
         mutableStateOf(capacity.toString())
     }
+    var colorTextFieldBorder = remember {
+        mutableStateOf(Color.Black)
+    }
+    var widhtTextFieldBorder = remember {
+        mutableStateOf(-1.dp)
+    }
     Dialog(
         onDismissRequest = {onDismiss()},
         properties = DialogProperties(
@@ -285,7 +292,6 @@ fun showEditDialog(
                         Text(text = "${name}", style = MaterialTheme.typography.h5, textAlign = TextAlign.Center)
                     }
 
-
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -295,7 +301,7 @@ fun showEditDialog(
                 ) {
                     TextField(
 
-                        shape = RoundedCornerShape(0.dp),
+                        shape = RoundedCornerShape(5.dp),
                         value = capacitynew.value,
                         onValueChange = {
                             capacitynew.value = it
@@ -303,7 +309,7 @@ fun showEditDialog(
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
-                        modifier = Modifier.size(100.dp,50.dp)
+                        modifier = Modifier.size(100.dp,50.dp).border(width = widhtTextFieldBorder.value, color = colorTextFieldBorder.value,  shape = RoundedCornerShape(5.dp),)
                         )
                     Text(
                         text = capacitySymbol,
@@ -335,7 +341,8 @@ fun showEditDialog(
                             try {
                                 onConfirm(capacitynew.value.toDouble())
                             }catch (e: java.lang.NumberFormatException){
-                                onDismiss()
+                                colorTextFieldBorder.value = Color.Red
+                                widhtTextFieldBorder.value = 2.dp
                             }
 
                         },
