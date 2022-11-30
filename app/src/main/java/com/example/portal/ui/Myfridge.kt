@@ -263,6 +263,7 @@ fun showEditDialog(
     var widhtTextFieldBorder = remember {
         mutableStateOf(-1.dp)
     }
+    var length = 0;
     Dialog(
         onDismissRequest = {onDismiss()},
         properties = DialogProperties(
@@ -304,6 +305,7 @@ fun showEditDialog(
                         shape = RoundedCornerShape(5.dp),
                         value = capacitynew.value,
                         onValueChange = {
+
                             capacitynew.value = it
                         },
                         keyboardOptions = KeyboardOptions(
@@ -338,12 +340,18 @@ fun showEditDialog(
                     }
                     Button(
                         onClick = {
-                            try {
-                                onConfirm(capacitynew.value.toDouble())
-                            }catch (e: java.lang.NumberFormatException){
+                            if(length <=7){
                                 colorTextFieldBorder.value = Color.Red
                                 widhtTextFieldBorder.value = 2.dp
+                            }else{
+                                try {
+                                    onConfirm(capacitynew.value.toDouble())
+                                }catch (e: java.lang.NumberFormatException){
+                                    colorTextFieldBorder.value = Color.Red
+                                    widhtTextFieldBorder.value = 2.dp
+                                }
                             }
+
 
                         },
                         colors = ButtonDefaults.buttonColors(
