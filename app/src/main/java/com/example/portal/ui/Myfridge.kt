@@ -263,6 +263,9 @@ fun showEditDialog(
     var widhtTextFieldBorder = remember {
         mutableStateOf(-1.dp)
     }
+    var errorMessage = remember {
+        mutableStateOf("")
+    }
     var length = 0;
     Dialog(
         onDismissRequest = {onDismiss()},
@@ -277,7 +280,7 @@ fun showEditDialog(
                 .width(250.dp)
         ) {
             Column(
-
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Card(
                     modifier = Modifier
@@ -305,19 +308,36 @@ fun showEditDialog(
                         shape = RoundedCornerShape(5.dp),
                         value = capacitynew.value,
                         onValueChange = {
+                            length = it.length
 
                             capacitynew.value = it
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
-                        modifier = Modifier.size(100.dp,50.dp).border(width = widhtTextFieldBorder.value, color = colorTextFieldBorder.value,  shape = RoundedCornerShape(5.dp),)
+                        modifier = Modifier
+                            .size(100.dp, 50.dp)
+                            .border(
+                                width = widhtTextFieldBorder.value,
+                                color = colorTextFieldBorder.value,
+                                shape = RoundedCornerShape(5.dp),
+                            )
                         )
+
                     Text(
                         text = capacitySymbol,
                         style = MaterialTheme.typography.h6
                     )
                 }
+                if(errorMessage.value!=""){
+                    Text(
+                        text = errorMessage.value,
+                        style = MaterialTheme.typography.h6,
+                        textAlign = TextAlign.Center,
+
+                        )
+                }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -340,15 +360,17 @@ fun showEditDialog(
                     }
                     Button(
                         onClick = {
-                            if(length <=7){
+                            if(length > 7){
                                 colorTextFieldBorder.value = Color.Red
                                 widhtTextFieldBorder.value = 2.dp
+                                errorMessage.value = "The line is too long"
                             }else{
                                 try {
                                     onConfirm(capacitynew.value.toDouble())
                                 }catch (e: java.lang.NumberFormatException){
                                     colorTextFieldBorder.value = Color.Red
                                     widhtTextFieldBorder.value = 2.dp
+                                    errorMessage.value = "The line does not contain a number"
                                 }
                             }
 
@@ -362,7 +384,7 @@ fun showEditDialog(
                         ) {
                         Text(
                             text = "OK",
-                            style = MaterialTheme.typography.h6
+                            style = MaterialTheme.typography.h6,
                         )
                     }
                 }
