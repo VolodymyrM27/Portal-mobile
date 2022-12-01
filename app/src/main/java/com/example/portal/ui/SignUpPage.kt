@@ -1,12 +1,14 @@
 package com.example.portal.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Lock
@@ -27,10 +29,11 @@ import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.R
 import com.example.portal.StyledButton
 import com.example.portal.TextEditField
+import com.example.portal.dto.SignUpDTO
 import com.example.portal.ui.theme.Green100
 
 @Composable
-fun SignUpPage(onRegisterClicked: (email: String, name: String, password: String, repeatPassword: String) -> Unit, isLoading: Boolean) {
+fun SignUpPage(onSignUpClick: (signUpDTO: SignUpDTO) -> Unit, isLoading: Boolean) {
     val focusManager = LocalFocusManager.current
 
     Box(Modifier.background(Green100)) {
@@ -61,6 +64,12 @@ fun SignUpPage(onRegisterClicked: (email: String, name: String, password: String
                 var name by remember { mutableStateOf("") }
                 var password by remember { mutableStateOf("") }
                 var repeatPassword by remember { mutableStateOf("") }
+                val signUpDTO = SignUpDTO(
+                    Email = email,
+                    Name = name,
+                    Password = password,
+                    RepeatPassword = repeatPassword
+                )
 
                 TextEditField(
                     icon = {
@@ -143,7 +152,9 @@ fun SignUpPage(onRegisterClicked: (email: String, name: String, password: String
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                StyledButton(onClick = { onRegisterClicked(email, name, password, repeatPassword) }, icon = {
+                StyledButton(onClick = {
+                    onSignUpClick(signUpDTO)
+                }, icon = {
                     Icon(
                         painter = painterResource(R.drawable.signup_icon),
                         contentDescription = "sign up",

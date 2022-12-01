@@ -6,21 +6,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-
-import androidx.compose.material.*
-
 import com.example.portal.R
 
 @Composable
-fun HomeScreen() {
+fun Dishes() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,7 +25,7 @@ fun HomeScreen() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Home View",
+            text = "Dishes View",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -41,11 +38,11 @@ fun HomeScreen() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    Dishes()
 }
 
 @Composable
-fun MusicScreen() {
+fun ProductsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +50,7 @@ fun MusicScreen() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Music View",
+            text = "Products View",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -66,7 +63,7 @@ fun MusicScreen() {
 @Preview(showBackground = true)
 @Composable
 fun MusicScreenPreview() {
-    MusicScreen()
+    ProductsScreen()
 }
 
 @Composable
@@ -96,7 +93,7 @@ fun MoviesScreenPreview() {
 
 
 @Composable
-fun BooksScreen() {
+fun Basket() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,7 +101,7 @@ fun BooksScreen() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Books View",
+            text = "Basket View",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -117,7 +114,7 @@ fun BooksScreen() {
 @Preview(showBackground = true)
 @Composable
 fun BooksScreenPreview() {
-    BooksScreen()
+    Basket()
 }
 
 @Composable
