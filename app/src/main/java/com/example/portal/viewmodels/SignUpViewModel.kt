@@ -6,13 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.portal.auth.BaseResponse
 import com.example.portal.repositories.UserRepository
-import com.example.portal.requests.SignUpRequest
-import com.example.portal.responses.SignUpResponse
+import com.example.portal.dto.requests.SignUpRequest
+import com.example.portal.dto.responses.SignUpResponse
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(application: Application) : AndroidViewModel(application) {
 
-    val userRepo = UserRepository()
+    private val userRepo = UserRepository()
     val signUpResult: MutableLiveData<BaseResponse<SignUpResponse>> = MutableLiveData()
 
     fun signUpUser(email: String, pwd: String, name: String) {

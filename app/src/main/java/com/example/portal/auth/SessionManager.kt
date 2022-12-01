@@ -6,7 +6,7 @@ import com.example.portal.R
 
 object SessionManager {
 
-    const val USER_TOKEN = "accessToken"
+    private const val USER_TOKEN = "accessToken"
 
     /**
      * Function to save auth token
@@ -22,7 +22,7 @@ object SessionManager {
         return getString(context, USER_TOKEN)
     }
 
-    fun saveString(context: Context, key: String, value: String) {
+    private fun saveString(context: Context, key: String, value: String) {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
         val editor = prefs.edit()
@@ -31,10 +31,10 @@ object SessionManager {
 
     }
 
-    fun getString(context: Context, key: String): String? {
+    private fun getString(context: Context, key: String): String? {
         val prefs: SharedPreferences =
             context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
-        return prefs.getString(this.USER_TOKEN, null)
+        return prefs.getString(key, null)
     }
 
     fun clearData(context: Context) {

@@ -15,5 +15,7 @@
     <string name="continue_with_google">"Continue with Google"</string>
     <string name="creating_new_account">"Creating new account"</string>
     <string name="create_new_account">"Create New Account"</string>
-    <string name="google_cloud_server_client_id" translatable="false">772324998925-3ql1dedr5evb224og1psm8dul7uestlg.apps.googleusercontent.com</string>
+    <string name="google_cloud_server_client_id" translatable="false">914410955662-hn0k3b6ct8durab1fsjg8452l8vqll12.apps.googleusercontent.com</string>
+    <string name="my_fridge">"My fridge"</string>
+    <string name="my_dietary_restrictions">"My dietary restrictions"</string>
 </resources>
