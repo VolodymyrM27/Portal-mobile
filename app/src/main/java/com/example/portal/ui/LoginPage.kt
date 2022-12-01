@@ -24,10 +24,16 @@ import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.R
 import com.example.portal.StyledButton
 import com.example.portal.TextEditField
+import com.example.portal.dto.SignInDTO
+import com.example.portal.dto.SignUpDTO
 import com.example.portal.ui.theme.Green100
 
 @Composable
-fun LoginPage(defaultEmail: String = "", onSignInClick: (email: String, password: String) -> Unit, isLoading: Boolean) {
+fun LoginPage(
+    defaultEmail: String = "",
+    onSignInClick: (signInDTO: SignInDTO) -> Unit,
+    isLoading: Boolean
+) {
     val focusManager = LocalFocusManager.current
 
 
@@ -54,6 +60,7 @@ fun LoginPage(defaultEmail: String = "", onSignInClick: (email: String, password
 
                 var email by remember { mutableStateOf(defaultEmail) }
                 var password by remember { mutableStateOf("") }
+                val signInDTO = SignInDTO(Email = email, Password = password)
 
                 TextEditField(
                     icon = {
@@ -87,20 +94,24 @@ fun LoginPage(defaultEmail: String = "", onSignInClick: (email: String, password
                     ),
                     keyboardActions = KeyboardActions(onGo = {
                         focusManager.clearFocus()
-                        onSignInClick(email, password)
+                        onSignInClick(signInDTO)
                     }),
                     visualTransformation = PasswordVisualTransformation()
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                StyledButton(onClick = { onSignInClick(email, password) }, icon = {
-                    Icon(
-                        painter = painterResource(R.drawable.input_icon),
-                        contentDescription = "sign in",
-                        modifier = Modifier.size(32.dp)
-                    )
-                }, textId = R.string.sign_in
+                StyledButton(onClick = {
+                    onSignInClick(signInDTO)
+                },
+                    icon = {
+                        Icon(
+                            painter = painterResource(R.drawable.input_icon),
+                            contentDescription = "sign in",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    },
+                    textId = R.string.sign_in
                 )
             }
 

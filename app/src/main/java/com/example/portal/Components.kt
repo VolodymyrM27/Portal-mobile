@@ -88,7 +88,7 @@ fun CustomCircularProgressIndicator() {
 }
 
 @Composable
-fun Header(text: String) {
+fun GreenBox(content: @Composable () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -96,6 +96,13 @@ fun Header(text: String) {
         shape = RoundedCornerShape(15.dp),
         BrightGreen
     ) {
+        content()
+    }
+}
+
+@Composable
+fun Header(text: String) {
+    GreenBox(content = {
         Box(
             modifier = Modifier
                 .size(0.dp, 50.dp)
@@ -105,5 +112,5 @@ fun Header(text: String) {
         {
             Text(text = text, style = MaterialTheme.typography.h2)
         }
-    }
+    })
 }

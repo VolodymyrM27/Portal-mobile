@@ -8,20 +8,24 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.StyledButton
 import com.example.portal.R
-import com.example.portal.responses.UserResponse
+import com.example.portal.dto.responses.UserResponse
 
-@Preview(showBackground = true)
 @Composable
-fun MainPage(userResponse: UserResponse? = null, onLogOutClick: () -> Unit = {}, isLoading: Boolean = false, goToFridge: () -> Unit = {}) {
+fun MainPage(
+    userResponse: UserResponse? = null,
+    onSignOutClick: () -> Unit,
+    isLoading: Boolean = false
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(10.dp)
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxHeight()
     ) {
 
         Row {
@@ -40,13 +44,7 @@ fun MainPage(userResponse: UserResponse? = null, onLogOutClick: () -> Unit = {},
             Text(userResponse?.email ?: "-", style = MaterialTheme.typography.h1)
         }
 
-        StyledButton(onClick = onLogOutClick, icon = {
-            androidx.compose.material.Icon(
-                imageVector = Icons.Rounded.Lock, contentDescription = "lock"
-            )
-        }, textId = R.string.logout)
-
-        StyledButton(onClick = goToFridge, icon = {
+        StyledButton(onClick = onSignOutClick, icon = {
             androidx.compose.material.Icon(
                 imageVector = Icons.Rounded.Lock, contentDescription = "lock"
             )
