@@ -31,146 +31,145 @@ import com.example.portal.Header
 import com.example.portal.R
 import com.example.portal.entities.FridgeItem
 import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.portal.ui.theme.BackgroundGrey
 
 
-@Preview
 @Composable
 fun Fridge(
-    items: List<FridgeItem> = listOf(
-        FridgeItem(
-            Title = "Смачні кадировці у власному соку",
-            Amount = 10.5,
-            UnitOfMeasurement = "kg",
-            Image = R.drawable.ic_launcher_background
-        ),
-        FridgeItem(
-            Title = "Молоко",
-            Amount = 1.0,
-            UnitOfMeasurement = "l",
-            R.drawable.ic_launcher_background
-        ),
-        FridgeItem(
-            Title = "Смачні кадировці у власному соку",
-            Amount = 10.5,
-            UnitOfMeasurement = "kg",
-            R.drawable.ic_launcher_background
-        )
-    )
+    items: List<FridgeItem>,
+    deleteItem: (id: Int) -> Unit,
+    editItem: (fridgeItem: FridgeItem) -> Unit
 ) {
+    val showDeleteDialog = remember {
+        mutableStateOf(false)
+    }
+    val itemToDeleteId = remember {
+        mutableStateOf(-1)
+    }
+    val itemToDeleteTitle = remember {
+        mutableStateOf("")
+    }
+    val showEditDialog = remember {
+        mutableStateOf(false)
+    }
+    val itemToEdit = remember {
+        mutableStateOf(
+            FridgeItem(
+                Id = -1,
+                Title = "",
+                Image = -1,
+                UnitOfMeasurement = "",
+                Amount = 0.0
+            )
+        )
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize().background(color = BackgroundGrey)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = BackgroundGrey)
     ) {
         Header(text = stringResource(R.string.my_fridge))
         LazyColumn {
             items(items) { item ->
-                FridgeItem(fridgeItem = item)
+                FridgeItem(fridgeItem = item, deleteItem = { id, title ->
+                    itemToDeleteId.value = id
+                    itemToDeleteTitle.value = title
+                    showDeleteDialog.value = true
+                }, editItem = { fridgeItem ->
+                    itemToEdit.value = fridgeItem
+                    showEditDialog.value = true
+                })
             }
+        }
+        if (showDeleteDialog.value) {
+            ShowDeleteDialog(
+                onConfirm = {
+                    deleteItem(
+                        itemToDeleteId.value
+                    )
+                    showDeleteDialog.value = false
+                },
+                onDismiss = {
+                    showDeleteDialog.value = false
+                },
+                title = itemToDeleteTitle.value
+            )
+        }
+        if (showEditDialog.value) {
+            ShowEditDialog(
+                fridgeItem = itemToEdit.value,
+                onDismiss = {
+                    showEditDialog.value = false
+                },
+                onConfirm = {
+                    editItem(
+                        itemToEdit.value.copy(Amount = it)
+                    )
+                    showEditDialog.value = false
+                }
+            )
         }
     }
 }
 
 @Composable
-fun FridgeItem(fridgeItem: FridgeItem) {
-    val capacityNew = remember {
-        mutableStateOf(fridgeItem.Amount)
-    }
-    val isReal = remember {
-        mutableStateOf(true)
-    }
-    val deleteDialog = remember {
-        mutableStateOf(false)
-    }
-    val editDialog = remember {
-        mutableStateOf(false)
-    }
-    if (isReal.value) {
-        Card(
+fun FridgeItem(
+    fridgeItem: FridgeItem,
+    deleteItem: (id: Int, title: String) -> Unit,
+    editItem: (fridgeItem: FridgeItem) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 5.dp),
+        shape = RoundedCornerShape(15.dp),
+        backgroundColor = LightGreen
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 5.dp),
-            shape = RoundedCornerShape(15.dp),
-            backgroundColor = LightGreen
+                .size(0.dp, 100.dp)
+                .fillMaxWidth(),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(0.dp, 100.dp)
-                    .fillMaxWidth(),
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                Image(
+                    painter = painterResource(id = fridgeItem.Image),
+                    contentDescription = "fridge_item",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(80.dp)
+                        .clip(CircleShape)
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Image(
-                        painter = painterResource(id = fridgeItem.Image),
-                        contentDescription = "fridge_item",
-                        contentScale = ContentScale.Crop,
+                    Text(
+                        text = fridgeItem.Title,
                         modifier = Modifier
-                            .padding(10.dp)
-                            .size(80.dp)
-                            .clip(CircleShape)
+                            .fillMaxWidth(0.8f),
+                        maxLines = 2,
+                        style = MaterialTheme.typography.body1
                     )
-                    Column(
-                        modifier = Modifier
-                            .padding(vertical = 10.dp)
-                            .fillMaxHeight(),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = fridgeItem.Title,
-                            modifier = Modifier
-                                .fillMaxWidth(0.8f),
-                            maxLines = 2,
-                            style = MaterialTheme.typography.body1
-                        )
-                        Text(
-                            text = "Capacity: ${capacityNew.value} ${fridgeItem.UnitOfMeasurement}",
-                            modifier = Modifier.fillMaxWidth(0.8f),
-                            style = MaterialTheme.typography.body2
-                        )
-                    }
-                    Column {
-                        IconButton(onClick = {
-                            editDialog.value = true
-                        }) {
-                            Icon(Icons.Filled.Edit, null)
-                        }
-                        IconButton(onClick = {
-                            deleteDialog.value = true
-                        }) {
-                            Icon(Icons.Filled.Clear, null)
-                        }
-                    }
-                }
-                if (deleteDialog.value) {
-                    ShowDeleteDialog(
-                        onDismiss = {
-                            deleteDialog.value = false
-                        },
-                        onConfirm = {
-                            isReal.value = false
-                            //отута вставити видалення з бази данних
-                            deleteDialog.value = false
-                        },
-                        name = fridgeItem.Title
+                    Text(
+                        text = "Capacity: ${fridgeItem.Amount} ${fridgeItem.UnitOfMeasurement}",
+                        modifier = Modifier.fillMaxWidth(0.8f),
+                        style = MaterialTheme.typography.body2
                     )
                 }
-                if (editDialog.value) {
-                    ShowEditDialog(
-                        onDismiss = {
-                            editDialog.value = false
-                        },
-                        { capacityFromDialog ->
-                            capacityFromDialog
-                            capacityNew.value = capacityFromDialog
-                            //отута вставити оновлення бази данних
-                            editDialog.value = false
-                        },
-                        name = fridgeItem.Title,
-                        capacity = capacityNew.value,
-                        capacitySymbol = fridgeItem.UnitOfMeasurement
-                    )
+                Column {
+                    IconButton(onClick = { editItem(fridgeItem) }) {
+                        Icon(Icons.Filled.Edit, null)
+                    }
+                    IconButton(onClick = { deleteItem(fridgeItem.Id, fridgeItem.Title) }) {
+                        Icon(Icons.Filled.Clear, null)
+                    }
                 }
             }
         }
@@ -183,7 +182,7 @@ fun FridgeItem(fridgeItem: FridgeItem) {
 fun ShowDeleteDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
-    name: String
+    title: String
 ) {
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -211,7 +210,7 @@ fun ShowDeleteDialog(
                     )
                     {
                         Text(
-                            text = "$name will be removed from your fridge",
+                            text = "$title will be removed from your fridge",
                             style = MaterialTheme.typography.h5,
                             textAlign = TextAlign.Center
                         )
@@ -263,12 +262,10 @@ fun ShowDeleteDialog(
 fun ShowEditDialog(
     onDismiss: () -> Unit,
     onConfirm: (capacityFromDialog: Double) -> Unit,
-    name: String,
-    capacity: Double,
-    capacitySymbol: String
+    fridgeItem: FridgeItem
 ) {
     val capacityNew = remember {
-        mutableStateOf(capacity.toString())
+        mutableStateOf(fridgeItem.Amount.toBigDecimal().toPlainString())
     }
     Dialog(
         onDismissRequest = { onDismiss() },
@@ -296,13 +293,11 @@ fun ShowEditDialog(
                     )
                     {
                         Text(
-                            text = name,
+                            text = fridgeItem.Title,
                             style = MaterialTheme.typography.h5,
                             textAlign = TextAlign.Center
                         )
                     }
-
-
                 }
                 Row(
                     modifier = Modifier
@@ -312,7 +307,6 @@ fun ShowEditDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextField(
-
                         shape = RoundedCornerShape(0.dp),
                         value = capacityNew.value,
                         onValueChange = {
@@ -324,7 +318,7 @@ fun ShowEditDialog(
                         modifier = Modifier.size(100.dp, 50.dp)
                     )
                     Text(
-                        text = capacitySymbol,
+                        text = fridgeItem.UnitOfMeasurement,
                         style = MaterialTheme.typography.h6
                     )
                 }
