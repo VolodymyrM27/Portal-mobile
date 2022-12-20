@@ -26,6 +26,10 @@ interface UserApi {
     @PUT("/fridge/delete/{item-id}/amount/{amount}")
     suspend fun deleteFromFridge(@Header("Authorization") token: String, @Path("item-id") id: Int, @Path("amount") amount: Int): Response<List<FridgeResponse>>
 
+    @PUT("/fridge/{item-id}/setamount/{amount}")
+    suspend fun updateFridgeAmount(@Header("Authorization") token: String, @Path("item-id") id: Int, @Path("amount") amount: Int): Response<List<FridgeResponse>>
+
+
     companion object {
         fun getApi(): UserApi? {
             return ApiClient.client?.create(UserApi::class.java)

@@ -8,6 +8,8 @@ import com.example.portal.dto.responses.LoginResponse
 import com.example.portal.dto.responses.SignUpResponse
 import com.example.portal.dto.responses.UserResponse
 import retrofit2.Response
+import retrofit2.http.Header
+import retrofit2.http.Path
 
 class UserRepository {
 
@@ -29,4 +31,9 @@ class UserRepository {
     suspend fun deleteFromFridge(accessToken: String, id: Int, amount: Int): Response<List<FridgeResponse>>? {
         return UserApi.getApi()?.deleteFromFridge(accessToken, id, amount)
     }
+
+    suspend fun updateFridgeAmount(token: String, id: Int, amount: Int): Response<List<FridgeResponse>>? {
+        return UserApi.getApi()?.updateFridgeAmount(token, id, amount)
+    }
+
 }

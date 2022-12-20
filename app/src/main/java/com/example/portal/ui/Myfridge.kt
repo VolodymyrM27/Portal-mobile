@@ -103,6 +103,10 @@ fun MyFridge(accessToken: String){
             itemsIndexed(Fridge.value){ index, item ->
                 FridgeItem(item.product.photo,item.product.name,item.amount,accessToken,item.product.id)
 
+                if(index == Fridge.value.size - 1){
+                    Spacer(modifier = Modifier.height(80.dp))
+                }
+
             }
         }
 
@@ -130,7 +134,14 @@ fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String
 
         coroutineScope.launch{
             val fridgeRespo = UserRepository()
-            val response = fridgeRespo.deleteFromFridge(accessToken, id, capacity+1)
+            fridgeRespo.deleteFromFridge(accessToken, id, capacity+1)
+        }
+    }
+    fun update(){
+
+        coroutineScope.launch{
+            val fridgeRespo = UserRepository()
+            fridgeRespo.updateFridgeAmount(accessToken, id, capacitynew.value)
         }
     }
 
@@ -203,7 +214,15 @@ fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String
                         {
                             capacityFromDialog -> capacityFromDialog
                             capacitynew.value = capacityFromDialog
-                            //отута вставити оновлення бази данних
+                            if(capacitynew.value == 0){
+                                delete()
+                                isreal.value = false;
+                            }else{
+                                update()
+                            }
+
+
+
                             editDialog.value = false
                         },
                         name = name,
@@ -416,7 +435,7 @@ fun showEditDialog(
                                 }catch (e: java.lang.NumberFormatException){
                                     colorTextFieldBorder.value = Color.Red
                                     widhtTextFieldBorder.value = 2.dp
-                                    errorMessage.value = "The line does not contain a number"
+                                    errorMessage.value = "The line does not contain a integer number"
                                 }
                             }
 
