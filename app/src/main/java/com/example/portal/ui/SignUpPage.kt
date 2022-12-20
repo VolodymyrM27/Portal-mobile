@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.lifecycle.viewModelScope
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
@@ -25,16 +26,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.R
 import com.example.portal.StyledButton
 import com.example.portal.TextEditField
 import com.example.portal.dto.SignUpDTO
+import com.example.portal.dto.requests.auth.BaseResponse
+import com.example.portal.dto.responses.FridgeResponse
+import com.example.portal.dto.responses.UserResponse
+import com.example.portal.repositories.UserRepository
 import com.example.portal.ui.theme.Green100
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun SignUpPage(onSignUpClick: (signUpDTO: SignUpDTO) -> Unit, isLoading: Boolean) {
     val focusManager = LocalFocusManager.current
+
+
 
     Box(Modifier.background(Green100)) {
         Card(

@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.portal.*
-import com.example.portal.auth.BaseResponse
-import com.example.portal.auth.SessionManager
+import com.example.portal.dto.requests.auth.BaseResponse
+import com.example.portal.dto.requests.auth.SessionManager
 import com.example.portal.dto.SignInDTO
 import com.example.portal.dto.SignUpDTO
 import com.example.portal.viewmodels.AuthViewModel

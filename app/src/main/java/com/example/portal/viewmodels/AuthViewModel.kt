@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.portal.auth.BaseResponse
+import com.example.portal.dto.requests.auth.BaseResponse
 import com.example.portal.dto.SignInDTO
 import com.example.portal.dto.SignUpDTO
 import com.example.portal.repositories.UserRepository

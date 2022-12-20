@@ -1,4 +1,4 @@
-package com.example.portal.auth
+package com.example.portal.dto.requests.auth
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

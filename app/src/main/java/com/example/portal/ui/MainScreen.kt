@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -22,7 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.portal.Routes
 import com.example.portal.R
-import com.example.portal.auth.SessionManager
+import com.example.portal.dto.requests.auth.SessionManager
 import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.entities.FridgeItem
 import com.example.portal.ui.theme.BrightGreen
@@ -79,19 +80,10 @@ fun Navigation(navController: NavHostController, onSignOut: () -> Unit) {
                     )
                 )
             }
-            Fridge(items = items,
-                deleteItem = { id ->
-                    items.removeIf { x ->
-                        x.Id == id
-                    }
-                },
-                editItem = { fridgeItem ->
-                    val item = items.find { x ->
-                        x.Id == fridgeItem.Id
-                    }
-                    item?.Amount = fridgeItem.Amount
-                }
-            )
+
+
+            val context = LocalContext.current
+            MyFridge("Bearer " + SessionManager.getToken(context))
         }
         composable(Routes.Basket.route) {
             Basket()

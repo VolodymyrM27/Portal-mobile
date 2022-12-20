@@ -1,8 +1,9 @@
 package com.example.portal.repositories
 
-import com.example.portal.auth.UserApi
+import com.example.portal.dto.requests.auth.UserApi
 import com.example.portal.dto.requests.LoginRequest
 import com.example.portal.dto.requests.SignUpRequest
+import com.example.portal.dto.responses.FridgeResponse
 import com.example.portal.dto.responses.LoginResponse
 import com.example.portal.dto.responses.SignUpResponse
 import com.example.portal.dto.responses.UserResponse
@@ -20,5 +21,8 @@ class UserRepository {
 
     suspend fun getUserInformation(accessToken : String): Response<UserResponse>? {
         return UserApi.getApi()?.getCurrentUser(accessToken = accessToken)
+    }
+    suspend fun getFridgeItems(accessToken: String): Response<List<FridgeResponse>>? {
+        return UserApi.getApi()?.getFridge(accessToken)
     }
 }

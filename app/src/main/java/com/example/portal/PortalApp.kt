@@ -7,7 +7,7 @@ import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.portal.auth.SessionManager
+import com.example.portal.dto.requests.auth.SessionManager
 import com.example.portal.ui.*
 import com.example.portal.viewmodels.AuthViewModel
 

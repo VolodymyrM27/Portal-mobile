@@ -1,7 +1,8 @@
-package com.example.portal.auth
+package com.example.portal.dto.requests.auth
 
 import com.example.portal.dto.requests.LoginRequest
 import com.example.portal.dto.requests.SignUpRequest
+import com.example.portal.dto.responses.FridgeResponse
 import com.example.portal.dto.responses.LoginResponse
 import com.example.portal.dto.responses.SignUpResponse
 import com.example.portal.dto.responses.UserResponse
@@ -21,6 +22,11 @@ interface UserApi {
 
     @GET("/user/me")
     suspend fun getCurrentUser(@Header("Authorization") accessToken: String): Response<UserResponse>
+
+    @GET("/fridge")
+    suspend fun getFridge(@Header("Authorization") token: String): Response<List<FridgeResponse>>
+
+
 
     companion object {
         fun getApi(): UserApi? {

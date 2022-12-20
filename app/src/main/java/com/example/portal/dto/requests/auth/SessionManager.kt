@@ -1,4 +1,4 @@
-package com.example.portal.auth
+package com.example.portal.dto.requests.auth
 
 import android.content.Context
 import android.content.SharedPreferences

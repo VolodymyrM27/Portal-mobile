@@ -1,4 +1,4 @@
-package com.example.portal.auth
+package com.example.portal.dto.requests.auth
 
 sealed class BaseResponse<out T> {
     data class Success<out T>(val data: T? = null) : BaseResponse<T>()
