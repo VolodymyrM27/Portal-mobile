@@ -101,7 +101,7 @@ fun MyFridge(accessToken: String){
         
         LazyColumn(){
             itemsIndexed(Fridge.value){ index, item ->
-                FridgeItem(item.product.photo,item.product.name,item.amount,"kg")
+                FridgeItem(item.product.photo,item.product.name,item.amount,accessToken,item.product.id)
 
             }
         }
@@ -111,7 +111,7 @@ fun MyFridge(accessToken: String){
 }
 
 @Composable
-fun FridgeItem(picture: String, name: String, capacity: Int, capacitySymbol: String){
+fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String, id: Int){
     var capacitynew = remember {
         mutableStateOf(capacity)
     }
@@ -124,6 +124,16 @@ fun FridgeItem(picture: String, name: String, capacity: Int, capacitySymbol: Str
     var editDialog = remember {
         mutableStateOf(false)
     }
+
+    val coroutineScope = rememberCoroutineScope()
+    fun delete(){
+
+        coroutineScope.launch{
+            val fridgeRespo = UserRepository()
+            val response = fridgeRespo.deleteFromFridge(accessToken, id, capacity+1)
+        }
+    }
+
     if (isreal.value){
         Card(modifier = Modifier
             .fillMaxWidth()
@@ -177,7 +187,9 @@ fun FridgeItem(picture: String, name: String, capacity: Int, capacitySymbol: Str
                         },
                         onConfirm = {
                             isreal.value = false;
-                            //отута вставити видалення з бази данних
+
+                            delete()
+
                             deletedDalog.value = false
                         },
                         name = name

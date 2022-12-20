@@ -7,10 +7,7 @@ import com.example.portal.dto.responses.LoginResponse
 import com.example.portal.dto.responses.SignUpResponse
 import com.example.portal.dto.responses.UserResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserApi {
 
@@ -26,7 +23,8 @@ interface UserApi {
     @GET("/fridge")
     suspend fun getFridge(@Header("Authorization") token: String): Response<List<FridgeResponse>>
 
-
+    @PUT("/fridge/delete/{item-id}/amount/{amount}")
+    suspend fun deleteFromFridge(@Header("Authorization") token: String, @Path("item-id") id: Int, @Path("amount") amount: Int): Response<List<FridgeResponse>>
 
     companion object {
         fun getApi(): UserApi? {

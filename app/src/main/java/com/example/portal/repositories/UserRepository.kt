@@ -25,4 +25,8 @@ class UserRepository {
     suspend fun getFridgeItems(accessToken: String): Response<List<FridgeResponse>>? {
         return UserApi.getApi()?.getFridge(accessToken)
     }
+
+    suspend fun deleteFromFridge(accessToken: String, id: Int, amount: Int): Response<List<FridgeResponse>>? {
+        return UserApi.getApi()?.deleteFromFridge(accessToken, id, amount)
+    }
 }
