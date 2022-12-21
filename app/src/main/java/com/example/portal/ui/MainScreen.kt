@@ -20,22 +20,31 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.portal.Routes
 import com.example.portal.R
+import com.example.portal.Routes
 import com.example.portal.auth.SessionManager
+import com.example.portal.dto.responses.dish.DishCategoryEntity
 import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.entities.FridgeItem
 import com.example.portal.ui.theme.BrightGreen
+import com.example.portal.viewmodels.DishViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun MainScreen(activity: ComponentActivity, goToAuthScreen: () -> Unit) {
+fun MainScreen(
+    activity: ComponentActivity,
+    dishViewModel: DishViewModel,
+    goToAuthScreen: () -> Unit
+) {
     val navController = rememberNavController()
     Box {
-        Navigation(navController = navController, onSignOut = {
-            SessionManager.clearData(activity)
-            goToAuthScreen()
-        })
+        Navigation(navController = navController,
+            dishViewModel = dishViewModel,
+            activity = activity,
+            onSignOut = {
+                SessionManager.clearData(activity)
+                goToAuthScreen()
+            })
         BottomNavigationBar(
             navController = navController,
             modifier = Modifier.align(Alignment.BottomCenter)
@@ -45,10 +54,20 @@ fun MainScreen(activity: ComponentActivity, goToAuthScreen: () -> Unit) {
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
-fun Navigation(navController: NavHostController, onSignOut: () -> Unit) {
+fun Navigation(
+    navController: NavHostController,
+    dishViewModel: DishViewModel,
+    activity: ComponentActivity,
+    onSignOut: () -> Unit
+) {
     NavHost(navController, startDestination = Routes.Dishes.route) {
         composable(Routes.Dishes.route) {
-            MainPage(onSignOutClick = onSignOut)
+            DishesPage(
+                dishViewModel = dishViewModel,
+                activity,
+                signOut = onSignOut,
+                dishCategoryEntity = DishCategoryEntity(Id = 1, Title = "title", Photo = "asd")
+            )
         }
         composable(Routes.Products.route) {
             ProductsScreen()

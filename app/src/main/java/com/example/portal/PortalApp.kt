@@ -10,13 +10,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.portal.auth.SessionManager
 import com.example.portal.ui.*
 import com.example.portal.viewmodels.AuthViewModel
+import com.example.portal.viewmodels.DishViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun PortalApp(
     activity: ComponentActivity,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    dishViewModel: DishViewModel
 ) {
     val navController = rememberNavController()
     val startDestination: MutableState<String> =
@@ -38,7 +40,7 @@ fun PortalApp(
             })
         }
         composable(Routes.MainScreen.route) {
-            MainScreen(activity = activity, goToAuthScreen = {
+            MainScreen(activity = activity, dishViewModel = dishViewModel , goToAuthScreen = {
                 navController.popBackStack(Routes.MainScreen.route, inclusive = true)
                 navController.navigate(Routes.AuthScreen.route)
             })
