@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.portal.Header
+import com.example.portal.GreenHeader
 import com.example.portal.R
 import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.ui.theme.BackgroundGrey
@@ -52,7 +52,7 @@ fun DietaryRestrictions(
             .fillMaxSize()
             .background(color = BackgroundGrey)
     ) {
-        Header(text = stringResource(R.string.my_dietary_restrictions))
+        GreenHeader(text = stringResource(R.string.my_dietary_restrictions))
         LazyColumn {
             items(restrictions) { restriction ->
                 DietaryRestriction(restriction = restriction, deleteItem = { id, title ->

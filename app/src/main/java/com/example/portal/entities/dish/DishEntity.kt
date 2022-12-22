@@ -1,5 +1,6 @@
-package com.example.portal.dto.responses.dish
+package com.example.portal.entities.dish
 
+import com.example.portal.entities.InstructionEntity
 import com.google.gson.annotations.SerializedName
 
 data class DishEntity(
@@ -14,5 +15,7 @@ data class DishEntity(
     @SerializedName("caloricity")
     var Caloricity: Float,
     @SerializedName("dishProducts")
-    var DishProducts: List<DishProductEntity>
+    var DishProducts: List<DishProductEntity>,
+    @SerializedName("instructions")
+    var Instructions: List<InstructionEntity>
 )

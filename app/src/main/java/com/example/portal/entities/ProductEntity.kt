@@ -1,4 +1,4 @@
-package com.example.portal.dto.responses.dish
+package com.example.portal.entities
 
 import com.google.gson.annotations.SerializedName
 
@@ -14,5 +14,5 @@ data class ProductEntity(
     @SerializedName("category")
     var Category: ProductCategoryEntity,
     @SerializedName("capacity")
-    var Capacity: Float
-)
+    var Capacity: Double,
+    )

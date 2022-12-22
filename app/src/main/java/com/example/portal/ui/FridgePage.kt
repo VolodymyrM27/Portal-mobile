@@ -27,7 +27,7 @@ import com.example.portal.ui.theme.Gray800
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.portal.Header
+import com.example.portal.GreenHeader
 import com.example.portal.R
 import com.example.portal.entities.FridgeItem
 import androidx.compose.foundation.lazy.items
@@ -69,7 +69,7 @@ fun Fridge(
             .fillMaxSize()
             .background(color = BackgroundGrey)
     ) {
-        Header(text = stringResource(R.string.my_fridge))
+        GreenHeader(text = stringResource(R.string.my_fridge))
         LazyColumn {
             items(items) { item ->
                 FridgeItem(fridgeItem = item, deleteItem = { id, title ->

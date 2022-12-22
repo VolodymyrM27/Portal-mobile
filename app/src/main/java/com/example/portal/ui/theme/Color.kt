@@ -12,8 +12,14 @@ val Green200 = Color(0xFF7DA274)
 val Yellow100 = Color(0xFFF2F1D6)
 
 val BrightGreen = Color(0xFF89CA64)
+val BrightYellow = Color(0xFFECE429)
 val LightGreen = Color(0xFFE8FCC1)
+val LightYellow = Color(0xFFFFFA91)
 val BackgroundGrey = Color(0xFFEEEEEE)
+
+val Milk = Color(0xFFFAFBF3)
+val BorderGreen = Color(0xFFC0D772)
+val BorderYellow = Color(0xFFD7D572)
 
 //Dark Theme
 val White = Color(0xFFFFFFFF)

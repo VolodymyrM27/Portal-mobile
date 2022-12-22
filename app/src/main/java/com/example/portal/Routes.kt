@@ -11,9 +11,17 @@ sealed class Routes(var route: String, var icon: Int? = null, var title: String?
     object MainScreen : Routes("MainScreen")
     object AuthScreen: Routes("AuthScreen")
 
-    object Dishes : Routes("Dish", R.drawable.dish, "Dishes")
-    object Products : Routes("MilkBottle", R.drawable.milk_bottle, "Products")
-    object Fridge : Routes("Fridge", R.drawable.fridge, "Fridge")
-    object Basket : Routes("BasketFood", R.drawable.basket_food, "Basket")
-    object Profile : Routes("ProfilePicture", R.drawable.profile_picture, "Profile")
+    object DishCategories : Routes("dish-categories")
+    object Dishes : Routes("dish-categories/{category-id}/dishes")
+    object DishDescription : Routes("DishDescription")
+
+    object ProductCategories : Routes("product-categories")
+    object Products : Routes("product-categories/{category-id}/products")
+    object ProductDescription : Routes("ProductDescription")
+
+    object DishScreen : Routes("dish-screen", R.drawable.dish_svgrepo_com, "DishScreen")
+    object ProductScreen : Routes("ProductScreen", R.drawable.milk_products_svgrepo_com, "ProductScreen")
+    object Fridge : Routes("Fridge", R.drawable.fridge_svgrepo_com, "Fridge")
+    object Basket : Routes("BasketFood", R.drawable.basket_svgrepo_com, "Basket")
+    object Profile : Routes("ProfilePicture", R.drawable.user_svgrepo_com, "Profile")
 }

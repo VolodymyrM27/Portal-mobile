@@ -11,6 +11,7 @@ import com.example.portal.auth.SessionManager
 import com.example.portal.ui.*
 import com.example.portal.viewmodels.AuthViewModel
 import com.example.portal.viewmodels.DishViewModel
+import com.example.portal.viewmodels.ProductViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.N)
@@ -18,7 +19,8 @@ import com.example.portal.viewmodels.DishViewModel
 fun PortalApp(
     activity: ComponentActivity,
     authViewModel: AuthViewModel,
-    dishViewModel: DishViewModel
+    dishViewModel: DishViewModel,
+    productViewModel: ProductViewModel
 ) {
     val navController = rememberNavController()
     val startDestination: MutableState<String> =
@@ -40,10 +42,14 @@ fun PortalApp(
             })
         }
         composable(Routes.MainScreen.route) {
-            MainScreen(activity = activity, dishViewModel = dishViewModel , goToAuthScreen = {
-                navController.popBackStack(Routes.MainScreen.route, inclusive = true)
-                navController.navigate(Routes.AuthScreen.route)
-            })
+            MainScreen(
+                activity = activity,
+                dishViewModel = dishViewModel,
+                productViewModel = productViewModel,
+                goToAuthScreen = {
+                    navController.popBackStack(Routes.MainScreen.route, inclusive = true)
+                    navController.navigate(Routes.AuthScreen.route)
+                })
         }
 
 //        composable(Routes.MainPage.route) {

@@ -1,4 +1,4 @@
-package com.example.portal.dto.responses.dish
+package com.example.portal.entities
 
 import com.google.gson.annotations.SerializedName
 

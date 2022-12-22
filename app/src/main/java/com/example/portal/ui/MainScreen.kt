@@ -16,30 +16,36 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.portal.R
 import com.example.portal.Routes
 import com.example.portal.auth.SessionManager
-import com.example.portal.dto.responses.dish.DishCategoryEntity
 import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.entities.FridgeItem
+import com.example.portal.ui.product.ProductScreen
 import com.example.portal.ui.theme.BrightGreen
+import com.example.portal.ui.theme.BrightYellow
 import com.example.portal.viewmodels.DishViewModel
+import com.example.portal.viewmodels.ProductViewModel
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
 fun MainScreen(
     activity: ComponentActivity,
     dishViewModel: DishViewModel,
+    productViewModel: ProductViewModel,
     goToAuthScreen: () -> Unit
 ) {
     val navController = rememberNavController()
     Box {
         Navigation(navController = navController,
             dishViewModel = dishViewModel,
+            productViewModel = productViewModel,
             activity = activity,
             onSignOut = {
                 SessionManager.clearData(activity)
@@ -57,20 +63,16 @@ fun MainScreen(
 fun Navigation(
     navController: NavHostController,
     dishViewModel: DishViewModel,
+    productViewModel: ProductViewModel,
     activity: ComponentActivity,
     onSignOut: () -> Unit
 ) {
-    NavHost(navController, startDestination = Routes.Dishes.route) {
-        composable(Routes.Dishes.route) {
-            DishesPage(
-                dishViewModel = dishViewModel,
-                activity,
-                signOut = onSignOut,
-                dishCategoryEntity = DishCategoryEntity(Id = 1, Title = "title", Photo = "asd")
-            )
+    NavHost(navController, startDestination = Routes.DishScreen.route) {
+        composable(route = Routes.DishScreen.route) {
+            DishScreen(dishViewModel = dishViewModel, activity = activity, onSignOut = onSignOut)
         }
-        composable(Routes.Products.route) {
-            ProductsScreen()
+        composable(Routes.ProductScreen.route) {
+            ProductScreen(productViewModel = productViewModel, activity = activity, onSignOut = onSignOut)
         }
         composable(Routes.Fridge.route) {
             val items = remember {
@@ -145,31 +147,35 @@ fun Navigation(
 @Composable
 fun BottomNavigationBar(navController: NavController, modifier: Modifier = Modifier) {
     val items = listOf(
-        Routes.Dishes,
-        Routes.Products,
+        Routes.DishScreen,
+        Routes.ProductScreen,
         Routes.Fridge,
         Routes.Basket,
         Routes.Profile
     )
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     BottomNavigation(
-        backgroundColor = BrightGreen,
-        //contentColor = Color.White,
+        backgroundColor = if (currentRoute == Routes.DishScreen.route) BrightYellow else BrightGreen,
+        contentColor = Color.Black,
         modifier = modifier
             .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
             .clip(shape = RoundedCornerShape(15.dp))
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
+
         items.forEach { item ->
             BottomNavigationItem(
+                modifier = Modifier.padding(6.dp),
                 icon = {
                     Icon(
                         painterResource(id = item.icon ?: 0),
                         contentDescription = item.title
                     )
                 },
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.White.copy(0.4f),
+                selectedContentColor = Color.Black,
+                unselectedContentColor = Color.Black.copy(0.3f),
                 selected = currentRoute == item.route,
                 onClick = {
                     navController.navigate(item.route) {
