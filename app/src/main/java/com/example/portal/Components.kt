@@ -2,6 +2,7 @@ package com.example.portal
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -12,11 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.portal.ui.theme.BrightGreen
+import com.example.portal.ui.theme.BrightYellow
 
 @Composable
 fun TextEditField(
@@ -101,15 +104,63 @@ fun GreenBox(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun Header(text: String) {
+fun YellowBox(content: @Composable () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 15.dp),
+        shape = RoundedCornerShape(15.dp),
+        BrightYellow
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun GreenHeader(text: String, hasBackButton: Boolean = false, onBackButtonClick: () -> Unit = {}) {
     GreenBox(content = {
-        Box(
+        Row(
             modifier = Modifier
-                .size(0.dp, 50.dp)
+                .defaultMinSize(minHeight = 50.dp)
                 .fillMaxWidth(),
-            contentAlignment = Alignment.Center
+            verticalAlignment = Alignment.CenterVertically
         )
         {
+            if (hasBackButton) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(horizontal = 5.dp)
+                        .clickable { onBackButtonClick() }
+                )
+            }
+            Text(text = text, style = MaterialTheme.typography.h2)
+        }
+    })
+}
+
+@Composable
+fun YellowHeader(text: String, hasBackButton: Boolean = false, onBackButtonClick: () -> Unit = {}) {
+    YellowBox(content = {
+        Row(
+            modifier = Modifier
+                .defaultMinSize(minHeight = 50.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
+            if (hasBackButton) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_arrow_back_24),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(horizontal = 5.dp)
+                        .clickable { onBackButtonClick() }
+                )
+            }
             Text(text = text, style = MaterialTheme.typography.h2)
         }
     })
