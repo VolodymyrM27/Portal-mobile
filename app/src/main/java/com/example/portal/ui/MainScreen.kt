@@ -24,9 +24,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.portal.Routes
 import com.example.portal.R
 import com.example.portal.dto.requests.auth.SessionManager
-import com.example.portal.entities.DietaryRestrictionEntity
+import com.example.portal.dto.responses.FridgeResponse
+import com.example.portal.dto.responses.RestrictionsResponse
 import com.example.portal.entities.FridgeItem
+import com.example.portal.repositories.UserRepository
 import com.example.portal.ui.theme.BrightGreen
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -90,25 +93,36 @@ fun Navigation(navController: NavHostController, onSignOut: () -> Unit) {
         }
         composable(Routes.Profile.route) {
             val restrictions = remember {
-                mutableListOf(
-                    DietaryRestrictionEntity(
-                        Id = 1,
-                        Title = "Вегетеріанство",
-                        Image = R.drawable.ic_launcher_background
-                    ),
-                    DietaryRestrictionEntity(
-                        Id = 2,
-                        Title = "Халяль",
-                        Image = R.drawable.ic_launcher_background
-                    )
-                )
+                mutableStateOf(emptyList<RestrictionsResponse>())
+            }
+
+            val repo = UserRepository()
+            val context = LocalContext.current
+            produceState<List<RestrictionsResponse>>(
+                initialValue = emptyList(),
+                producer = {
+
+                    val response = repo.getRestrictions("Bearer " + SessionManager.getToken(context))
+
+                    try {
+
+                        restrictions.value = response?.body()!!
+                    }catch(ex: Exception){}
+
+                })
+
+            val coroutineScope = rememberCoroutineScope()
+            fun delete(id: Int){
+
+                coroutineScope.launch{
+
+                    restrictions.value = repo.deleteRestriction("Bearer " + SessionManager.getToken(context),id)?.body()!!
+                }
             }
             DietaryRestrictions(
                 restrictions = restrictions,
-                deleteItem = { id ->
-                    restrictions.removeIf { x ->
-                        x.Id == id
-                    }
+                deleteItem = {id ->
+                    delete(id)
                 }
             )
         }

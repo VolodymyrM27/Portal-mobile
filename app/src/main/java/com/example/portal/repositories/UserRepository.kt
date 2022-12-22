@@ -3,10 +3,7 @@ package com.example.portal.repositories
 import com.example.portal.dto.requests.auth.UserApi
 import com.example.portal.dto.requests.LoginRequest
 import com.example.portal.dto.requests.SignUpRequest
-import com.example.portal.dto.responses.FridgeResponse
-import com.example.portal.dto.responses.LoginResponse
-import com.example.portal.dto.responses.SignUpResponse
-import com.example.portal.dto.responses.UserResponse
+import com.example.portal.dto.responses.*
 import retrofit2.Response
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -36,4 +33,10 @@ class UserRepository {
         return UserApi.getApi()?.updateFridgeAmount(token, id, amount)
     }
 
+    suspend fun getRestrictions(token: String): Response<List<RestrictionsResponse>>? {
+        return UserApi.getApi()?.getRestrictions(token)
+    }
+    suspend fun deleteRestriction(accessToken: String, id: Int): Response<List<RestrictionsResponse>>? {
+        return UserApi.getApi()?.deleteRestriction(accessToken, id)
+    }
 }

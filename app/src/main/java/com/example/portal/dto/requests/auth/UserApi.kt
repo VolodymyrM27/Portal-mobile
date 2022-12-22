@@ -2,10 +2,7 @@ package com.example.portal.dto.requests.auth
 
 import com.example.portal.dto.requests.LoginRequest
 import com.example.portal.dto.requests.SignUpRequest
-import com.example.portal.dto.responses.FridgeResponse
-import com.example.portal.dto.responses.LoginResponse
-import com.example.portal.dto.responses.SignUpResponse
-import com.example.portal.dto.responses.UserResponse
+import com.example.portal.dto.responses.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -29,6 +26,11 @@ interface UserApi {
     @PUT("/fridge/{item-id}/setamount/{amount}")
     suspend fun updateFridgeAmount(@Header("Authorization") token: String, @Path("item-id") id: Int, @Path("amount") amount: Int): Response<List<FridgeResponse>>
 
+    @GET("/restrictions")
+    suspend fun getRestrictions(@Header("Authorization") token: String): Response<List<RestrictionsResponse>>
+
+    @PUT("/restrictions/delete/{id}")
+    suspend fun deleteRestriction(@Header("Authorization") token: String, @Path("id") id: Int): Response<List<RestrictionsResponse>>
 
     companion object {
         fun getApi(): UserApi? {

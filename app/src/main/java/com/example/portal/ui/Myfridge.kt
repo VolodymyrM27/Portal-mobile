@@ -5,11 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -21,8 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -33,16 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import coil.compose.rememberAsyncImagePainter
-import com.example.portal.R
-import com.example.portal.dto.requests.auth.BaseResponse
-import com.example.portal.dto.requests.auth.SessionManager
 import com.example.portal.dto.responses.FridgeResponse
-import com.example.portal.dto.responses.UserResponse
 import com.example.portal.repositories.UserRepository
-import com.example.portal.ui.theme.White
 import kotlinx.coroutines.launch
 
 
@@ -64,10 +53,8 @@ fun MyFridge(accessToken: String){
         producer = {
             val response = fridgeRespo.getFridgeItems(accessToken)
 
-            value = response?.body()!!
-
             loading.value = false
-            Fridge.value = value
+            Fridge.value = response?.body()!!
         })
 
 
@@ -116,16 +103,16 @@ fun MyFridge(accessToken: String){
 
 @Composable
 fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String, id: Int){
-    var capacitynew = remember {
+    val capacitynew = remember {
         mutableStateOf(capacity)
     }
-    var isreal = remember {
+    val isreal = remember {
         mutableStateOf(true)
     }
-    var deletedDalog = remember {
+    val deletedDalog = remember {
         mutableStateOf(false)
     }
-    var editDialog = remember {
+    val editDialog = remember {
         mutableStateOf(false)
     }
 
@@ -180,7 +167,7 @@ fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String
                         verticalArrangement = Arrangement.SpaceAround
                     ) {
                         IconButton(onClick = {
-                            editDialog.value = true;
+                            editDialog.value = true
                         }) {
                             Icon(Icons.Filled.Edit,null)
                         }
@@ -197,7 +184,7 @@ fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String
                             deletedDalog.value = false
                         },
                         onConfirm = {
-                            isreal.value = false;
+                            isreal.value = false
 
                             delete()
 
@@ -216,7 +203,7 @@ fun FridgeItem(picture: String, name: String, capacity: Int, accessToken: String
                             capacitynew.value = capacityFromDialog
                             if(capacitynew.value == 0){
                                 delete()
-                                isreal.value = false;
+                                isreal.value = false
                             }else{
                                 update()
                             }

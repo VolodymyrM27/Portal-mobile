@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,8 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import coil.compose.rememberAsyncImagePainter
 import com.example.portal.Header
 import com.example.portal.R
+import com.example.portal.dto.responses.RestrictionsResponse
 import com.example.portal.entities.DietaryRestrictionEntity
 import com.example.portal.ui.theme.BackgroundGrey
 import com.example.portal.ui.theme.BrightGreen
@@ -34,7 +37,7 @@ import com.example.portal.ui.theme.LightGreen
 
 @Composable
 fun DietaryRestrictions(
-    restrictions: MutableList<DietaryRestrictionEntity>,
+    restrictions: MutableState<List<RestrictionsResponse>>,
     deleteItem: (id: Int) -> Unit
 ) {
     val showDeleteDialog = remember {
@@ -46,42 +49,46 @@ fun DietaryRestrictions(
     val itemToDeleteTitle = remember {
         mutableStateOf("")
     }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = BackgroundGrey)
-    ) {
-        Header(text = stringResource(R.string.my_dietary_restrictions))
-        LazyColumn {
-            items(restrictions) { restriction ->
-                DietaryRestriction(restriction = restriction, deleteItem = { id, title ->
-                    itemToDeleteId.value = id
-                    itemToDeleteTitle.value = title
-                    showDeleteDialog.value = true
-                })
+    Box(){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = BackgroundGrey)
+        ) {
+            Header(text = stringResource(R.string.my_dietary_restrictions))
+            LazyColumn {
+                items(restrictions.value) { restriction ->
+                    DietaryRestriction(restriction = restriction, deleteItem = { id, title ->
+                        itemToDeleteId.value = id
+                        itemToDeleteTitle.value = title
+                        showDeleteDialog.value = true
+                    })
+                }
+            }
+            if (showDeleteDialog.value) {
+                DeleteRestrictionDialog(
+                    title = itemToDeleteTitle.value,
+                    onConfirm = {
+                        deleteItem(
+                            itemToDeleteId.value
+                        )
+                        showDeleteDialog.value = false
+                    },
+                    onDismiss = {
+                        showDeleteDialog.value = false
+                    }
+                )
             }
         }
-        if (showDeleteDialog.value) {
-            DeleteRestrictionDialog(
-                title = itemToDeleteTitle.value,
-                onConfirm = {
-                    deleteItem(
-                        itemToDeleteId.value
-                    )
-                    showDeleteDialog.value = false
-                },
-                onDismiss = {
-                    showDeleteDialog.value = false
-                }
-            )
-        }
+
+
     }
+
 }
 
 @Composable
 fun DietaryRestriction(
-    restriction: DietaryRestrictionEntity,
+    restriction: RestrictionsResponse,
     deleteItem: (id: Int, title: String) -> Unit
 ) {
     Card(
@@ -101,7 +108,7 @@ fun DietaryRestriction(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = restriction.Image),
+                    painter = rememberAsyncImagePainter(restriction.photo),
                     contentDescription = "fridge_item",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -110,7 +117,7 @@ fun DietaryRestriction(
                         .clip(CircleShape)
                 )
                 Text(
-                    text = restriction.Title,
+                    text = restriction.name,
                     modifier = Modifier
                         .fillMaxWidth(0.8f),
                     maxLines = 2,
@@ -118,7 +125,7 @@ fun DietaryRestriction(
                 )
 
                 IconButton(onClick = {
-                    deleteItem(restriction.Id, restriction.Title)
+                    deleteItem(restriction.id, restriction.name)
                 }) {
                     Icon(Icons.Filled.Clear, null)
                 }
