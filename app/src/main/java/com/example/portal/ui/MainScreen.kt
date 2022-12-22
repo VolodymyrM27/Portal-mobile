@@ -21,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.Routes
 import com.example.portal.R
 import com.example.portal.dto.requests.auth.SessionManager
@@ -96,18 +97,24 @@ fun Navigation(navController: NavHostController, onSignOut: () -> Unit) {
                 mutableStateOf(emptyList<RestrictionsResponse>())
             }
 
+            val loading = remember {
+                mutableStateOf(true)
+            }
+
             val repo = UserRepository()
             val context = LocalContext.current
             produceState<List<RestrictionsResponse>>(
                 initialValue = emptyList(),
                 producer = {
 
+                    loading.value = true
                     val response = repo.getRestrictions("Bearer " + SessionManager.getToken(context))
 
                     try {
 
                         restrictions.value = response?.body()!!
                     }catch(ex: Exception){}
+                    loading.value = false
 
                 })
 
@@ -115,15 +122,19 @@ fun Navigation(navController: NavHostController, onSignOut: () -> Unit) {
             fun delete(id: Int){
 
                 coroutineScope.launch{
-
+                    loading.value = true
                     restrictions.value = repo.deleteRestriction("Bearer " + SessionManager.getToken(context),id)?.body()!!
+                    loading.value = false
                 }
             }
+
+
             DietaryRestrictions(
                 restrictions = restrictions,
                 deleteItem = {id ->
                     delete(id)
-                }
+                },
+                loading.value
             )
         }
     }

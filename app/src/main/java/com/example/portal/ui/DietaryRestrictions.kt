@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
+import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.Header
 import com.example.portal.R
 import com.example.portal.dto.responses.RestrictionsResponse
@@ -38,8 +39,10 @@ import com.example.portal.ui.theme.LightGreen
 @Composable
 fun DietaryRestrictions(
     restrictions: MutableState<List<RestrictionsResponse>>,
-    deleteItem: (id: Int) -> Unit
+    deleteItem: (id: Int) -> Unit,
+    loading: Boolean
 ) {
+
     val showDeleteDialog = remember {
         mutableStateOf(false)
     }
@@ -50,12 +53,18 @@ fun DietaryRestrictions(
         mutableStateOf("")
     }
     Box(){
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = BackgroundGrey)
         ) {
             Header(text = stringResource(R.string.my_dietary_restrictions))
+
+            if(loading){
+                CustomCircularProgressIndicator()
+            }
+
             LazyColumn {
                 items(restrictions.value) { restriction ->
                     DietaryRestriction(restriction = restriction, deleteItem = { id, title ->

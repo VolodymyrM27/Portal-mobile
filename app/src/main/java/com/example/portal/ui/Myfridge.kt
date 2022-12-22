@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
+import com.example.portal.CustomCircularProgressIndicator
 import com.example.portal.dto.responses.FridgeResponse
 import com.example.portal.repositories.UserRepository
 import kotlinx.coroutines.launch
@@ -57,7 +58,9 @@ fun MyFridge(accessToken: String){
             Fridge.value = response?.body()!!
         })
 
-
+    if(loading.value){
+        CustomCircularProgressIndicator()
+    }
     Column(
         modifier = Modifier.fillMaxSize(),
 
@@ -81,10 +84,7 @@ fun MyFridge(accessToken: String){
 
         }
 
-        if(loading.value){
-            Text(text = "Loading...", style = MaterialTheme.typography.h5, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
 
-        }
         
         LazyColumn(){
             itemsIndexed(Fridge.value){ index, item ->
